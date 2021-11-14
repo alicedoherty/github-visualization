@@ -1,4 +1,5 @@
-version: "3.3"
+# Not used atm
+version: "3.5"
 services:
   mongodb:
     image : mongo
@@ -6,8 +7,10 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
+      # MONGO_INITDB_ROOT_USERNAME: root
+      # MONGO_INITDB_ROOT_PASSWORD: password
     volumes:
-      - ./database:/data/db
+      - ./data:/data/db
     ports:
       - 27017:27017
     restart: unless-stopped
