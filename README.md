@@ -7,5 +7,4 @@
 
 ### Documentation Dump
 [PyGithub](https://pygithub.readthedocs.io/en/latest/)
-
 [PyMongo](https://pymongo.readthedocs.io/en/stable/)
