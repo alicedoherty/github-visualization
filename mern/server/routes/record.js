@@ -42,9 +42,10 @@ recordRoutes.route("/record/:id").get(function (req, res) {
 recordRoutes.route("/record/add").post(function (req, response) {
   let db_connect = dbo.getDb();
   let myobj = {
-    person_name: req.body.person_name,
-    person_position: req.body.person_position,
-    person_level: req.body.person_level,
+    username: req.body.username,
+    followers: req.body.followers,
+    following: req.body.following,
+    url: req.body.url,
   };
   db_connect.collection("records").insertOne(myobj, function (err, res) {
     if (err) throw err;
