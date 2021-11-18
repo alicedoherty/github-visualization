@@ -8,6 +8,7 @@ import Navbar from "./components/navbar";
 import Edit from "./components/edit";
 import Create from "./components/create";
 import RecordList from "./components/recordList";
+import GitHubSearch from "./components/test"
 
 const App = () => {
   return (
@@ -19,6 +20,9 @@ const App = () => {
       <Route path="/edit/:id" component={Edit} />
       <Route path="/create">
         <Create />
+      </Route>
+      <Route exact path="/">
+        <GitHubSearch username = "alicedoherty"/>
       </Route>
     </div>
   );
