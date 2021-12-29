@@ -1,4 +1,7 @@
 // Called from index.html when "Let's Go!" is pressed
+var commitDayChart = null;
+var commitTimeChart = null;
+
 function main() {
     if (document.getElementById('username').value != '') {
         var username = document.getElementById('username').value;
@@ -12,6 +15,12 @@ function main() {
         var auth = null;
     }
 
+    if (commitDayChart != null)
+        commitDayChart.destroy();
+
+    if (commitTimeChart != null)
+        commitDayChart.destroy();
+
     getUserData(username, auth);
 }
 
@@ -20,7 +29,6 @@ async function apiCall(url, auth) {
     var headers = {
         "Authorization": `Token ${auth}`
     }
-
 
     const response = (auth == null) ? await fetch(url) : await fetch(url, {
         "method": "GET",
@@ -35,41 +43,179 @@ async function getUserData(username, auth) {
     let url = `https://api.github.com/users/${username}`;
     let userData = await apiCall(url, auth).catch(e => console.error(e));
 
-    document.getElementById("test").innerHTML = userData.name;
+    setUserCard(userData);
+
+    url = `https://api.github.com/users/${username}/repos`;
+    let repoList = await apiCall(url, auth).catch(e => console.error(e));
+
+    getCommitDateData(repoList, username, auth);
 }
 
+function setUserCard(data) {
+    document.getElementById("avatar").src = data.avatar_url;
+    document.getElementById("name").innerHTML = data.name;
+    document.getElementById("bio").innerHTML = data.bio;
+    document.getElementById("login").innerHTML = `<b>Username:</b> ${data.login}`;
+    document.getElementById("location").innerHTML = `<b>Location:</b> ${data.location}`;
+    document.getElementById("followers").innerHTML = `<b>Followers:</b> ${data.followers}`;
+    document.getElementById("following").innerHTML = `<b>Following:</b> ${data.following}`;
+    document.getElementById("html-url").href = data.html_url;
+}
 
+function displayUserCard() {
+    document.getElementById('user-card').style.display = "block";
+}
 
-//     const labels = [
-//         username,
-//         auth,
-//         'March',
-//         'April',
-//         'May',
-//         'June',
-//       ];
+async function getCommitDateData(repoList, username, auth) {
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    var dayCount = [0,0,0,0,0,0,0];
+
+    var timeCount = [0,0,0,0];
+
+    for (repo in repoList) {
+        // TODO Come back and alter parameters
+        let url = `https://api.github.com/repos/${username}/${repoList[repo].name}/commits?page=1&per_page=20`;
+        let commitList = await apiCall(url, auth).catch(e => console.error(e));
+
+        for (commit in commitList) {
+            let date = new Date(commitList[commit].commit.author.date);
+            let commitDay = days[date.getDay()];
+            let commitHour = date.getUTCHours();
+            
+            for (let i = 0; i < days.length; i++) {
+                if (commitDay == days[i]) {
+                    dayCount[i] += 1;
+                }
+            }
+
+            // Morning = 5am - 12pm
+            // Afternoon = 12pm - 5pm 
+            // Evening = 5pm - 9pm
+            // Night = 9pm - 5am
+            if (commitHour > 5 && commitHour < 12)
+                timeCount[0] += 1;
+            else if (commitHour > 12 && commitHour < 17)
+                timeCount[1] += 1;
+            else if (commitHour > 17 && commitHour < 21)
+                timeCount[2] += 1;
+            else
+                timeCount[3] += 1;
+        }   
+    }
+    // document.getElementById("test").innerHTML = timeCount;
+    createCommitDayGraph(dayCount);
+    createCommitTimeGraph(timeCount);
+}
+
+function createCommitDayGraph(dayData) {
+    const labels = [
+        'Sunday',
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday', 
+        'Saturday',
+    ];
     
-//     const data = {
-//     labels: labels,
-//     datasets: [{
-//         label: 'My First dataset',
-//         backgroundColor: 'rgb(255, 99, 132)',
-//         borderColor: 'rgb(255, 99, 132)',
-//         data: [0, 10, 5, 2, 20, 30, 45],
-//     }]
-//     };
+    const data = {
+        labels: labels,
+        datasets: [
+            {
+                label: 'Your User\'s Commit Data',
+                backgroundColor: '#557C55',
+                borderColor: '#557C55',
+                data: dayData,
+                borderWidth: 2,
+                borderRadius: 10,
+                borderSkipped: false,
+            },
+            {
+                label: 'Linus Torvalds\' Commit Data',
+                backgroundColor: '#A6CF98',
+                borderColor: '#A6CF98',
+                data: [22,22,6,22,9,13,17],
+                borderWidth: 2,
+                borderRadius: 10,
+                borderSkipped: false,
+            }
+        ]
+    };
     
-//     const config = {
-//         type: 'line',
-//         data: data,
-//         options: {}
-//     };
+    const config = {
+        type: 'bar',
+        data: data,
+        options: {
+            responsive: true,
+            plugins: {
+            legend: {
+                position: 'top',
+            },
+            title: {
+                display: true,
+                text: 'Commit Day Bar Chart'
+            }
+            }
+        }
+    };
     
-//     const myChart = new Chart(
-//         document.getElementById('myChart'),
-//         config
-//     );
-// }
+    commitDayChart = new Chart(
+        document.getElementById("commit-day-chart"),
+        config
+    );
+}
 
-
-
+function createCommitTimeGraph(timeData) {
+    const labels = [
+        'Morning',
+        'Afternoon',
+        'Evening',
+        'Night',
+    ];
+    
+    const data = {
+        labels: labels,
+        datasets: [
+            {
+                label: 'Your User\'s Commit Data',
+                backgroundColor: '#A6CF98',
+                borderColor: '#A6CF98',
+                data: timeData,
+                borderWidth: 2,
+                borderRadius: 10,
+                borderSkipped: false,
+            },
+            {
+                label: 'Linus Torvalds\' Commit Data',
+                backgroundColor: '#557C55',
+                borderColor: '#557C55',
+                data: [12,7,44,48],
+                borderWidth: 2,
+                borderRadius: 10,
+                borderSkipped: false,
+            }
+        ]
+    };
+    
+    const config = {
+        type: 'bar',
+        data: data,
+        options: {
+            responsive: true,
+            plugins: {
+            legend: {
+                position: 'top',
+            },
+            title: {
+                display: true,
+                text: 'Commit Time Bar Chart'
+            }
+            }
+        }
+    };
+    
+    commitTimeChart = new Chart(
+        document.getElementById("commit-time-chart"),
+        config
+    );
+}
