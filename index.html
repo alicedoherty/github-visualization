@@ -13,9 +13,19 @@
     </head>
 
     <body style="background-color:#F2FFE9">
-        
-        <nav class="navbar navbar-light justify-content-between" style="background-color: #F2FFE9;">
-            <a class="navbar-brand">GitHub Visualisation 😐</a>
+        <nav class="navbar navbar-expand navbar-light sticky-top" style="background-color: #e1f7d1;">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-link active" aria-current="page" href="#">GitHub Visualisation 😐</a>
+                    <a class="nav-link" href="#productivity">Productivity</a>
+                    <a class="nav-link" href="#interests">Interests</a>
+                    <a class="nav-link" href="#">Disabled</a>
+                </div>
+            </div>
+
             <form class="form-inline">
               <input class="form-control mr-sm-2" type="text" placeholder="GitHub username" id="username">
               <input class="form-control mr-sm-2" type="text" placeholder="Authentication code" id="auth">
@@ -26,34 +36,58 @@
         <!-- <button class="btn btn-outline-success my-2 my-sm-0" type="button" onclick="displayUserCard()">Display User Card</button> -->
 
         <!-- User Card -->
-        <div class="card" id="user-card" style="display:none;width: 18rem;">
-            <img id="avatar" src="" class="card-img-top" alt="Profile picture">
-            <div class="card-body">
-                <h5 class="card-title" id="name"></h5>
-                <p class="card-text" id="bio"></p>
-            </div>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item" id="login"></li>
-                <li class="list-group-item" id="location"></li>
-                <li class="list-group-item" id="followers"></li>
-                <li class="list-group-item" id="following"></li>
-            </ul>
-            <div class="card-body">
-                <a href="" class="btn btn-primary" id="html-url">Visit Profile</a>
+
+        <br />
+
+        <h2>Who are you?</h2>
+
+        <div class="card mb-3 graph" id="user-card" style="display:none;max-width: 540px;">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <img id="avatar" src="" class="img-fluid rounded-start" alt="Profile picture">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title" id="name"></h5>
+                        <p class="card-text" id="bio"></p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item" id="login"></li>
+                        <li class="list-group-item" id="location"></li>
+                        <li class="list-group-item" id="followers"></li>
+                        <li class="list-group-item" id="following"></li>
+                    </ul>
+                    <div class="card-body">
+                        <a href="" class="btn btn-primary" id="html-url">Visit Profile</a>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <h2>When are you most productive?</h2>
+        <br />
+
+        <a class="anchor" id="productivity"></a>
+        <h2></a>When are you most productive?</h2>
 
         <!-- Commit Day Graph -->
-        <div>
+        <div class="graph">
             <h3 id="test"></h3>
             <canvas id="commit-day-chart"></canvas>
         </div>
 
         <!-- Commit Time Graph -->
-        <div>
+        <div class="graph">
             <canvas id="commit-time-chart"></canvas>
+        </div>
+
+        <br />
+
+        <a class="anchor" id="interests"></a>
+        <h2>What are you interested in?</h2>
+
+        <!-- Commit Day Graph -->
+        <div class="graph">
+            <canvas id="topics-chart"></canvas>
         </div>
 
         <!-- JavaScript files -->

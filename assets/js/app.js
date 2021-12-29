@@ -1,7 +1,4 @@
 // Called from index.html when "Let's Go!" is pressed
-var commitDayChart = null;
-var commitTimeChart = null;
-
 function main() {
     if (document.getElementById('username').value != '') {
         var username = document.getElementById('username').value;
@@ -19,6 +16,9 @@ function main() {
         commitDayChart.destroy();
 
     if (commitTimeChart != null)
+        commitDayChart.destroy();
+    
+    if (topicChart != null)
         commitDayChart.destroy();
 
     getUserData(username, auth);
@@ -49,6 +49,10 @@ async function getUserData(username, auth) {
     let repoList = await apiCall(url, auth).catch(e => console.error(e));
 
     getCommitDateData(repoList, username, auth);
+
+    url = `https://api.github.com/users/${username}/starred?page=1&per_page=20`;
+    let starredList = await apiCall(url, auth).catch(e => console.error(e));
+    getTopics(starredList);
 }
 
 function setUserCard(data) {
@@ -219,3 +223,70 @@ function createCommitTimeGraph(timeData) {
         config
     );
 }
+
+function getTopics(starredList) {
+    let topicList = [];
+    let topicCount = [];
+    let colours = [];
+    const randomNum = () => Math.floor(Math.random() * (235 - 52 + 1) + 52);
+
+    for (star in starredList) {
+        let topics = starredList[star].topics;
+        for (let i = 0; i < topics.length; i++) {
+            if (topicList.includes(topics[i])) {
+                for (let j = 0; j < topicList.length; j++) {
+                    if (topics[i] == topicList[j]) {
+                        topicCount[j] = topicCount[j] + 1;
+                    }
+                }
+            } else {
+                topicList.push(topics[i]);
+                topicCount.push(1);
+                colours.push(`rgb(${randomNum()}, ${randomNum()}, ${randomNum()})`);
+            }
+        }
+    }
+    createTopicsGraph(topicList, topicCount, colours)
+    // document.getElementById("test").innerHTML = topicCount + topicList;
+}
+
+function createTopicsGraph(topicList, topicCount, colours) {
+    const labels = topicList;
+    
+    const data = {
+        labels: labels,
+        datasets: [
+            {
+                label: 'Your User\'s Commit Data',
+                backgroundColor: colours,
+                data: topicCount,
+            }
+        ]
+    };
+    
+    const config = {
+        type: 'polarArea',
+        data: data,
+        options: {
+            responsive: true,
+            plugins: {
+            legend: {
+                position: 'top',
+            },
+            title: {
+                display: true,
+                text: 'Topics Bar Doughnut'
+            }
+            }
+        }
+    };
+    
+    topicChart = new Chart(
+        document.getElementById("topics-chart"),
+        config
+    );
+}
+
+var commitDayChart = null;
+var commitTimeChart = null;
+var topicChart = null;
