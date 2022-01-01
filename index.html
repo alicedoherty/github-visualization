@@ -22,7 +22,7 @@
                     <a class="nav-link active" aria-current="page" href="#">GitHub Visualisation 😐</a>
                     <a class="nav-link" href="#productivity">Productivity</a>
                     <a class="nav-link" href="#interests">Interests</a>
-                    <a class="nav-link" href="#">Disabled</a>
+                    <a class="nav-link" href="#popularity">Popularity</a>
                 </div>
             </div>
 
@@ -33,11 +33,9 @@
             </form>
         </nav>
 
-        <!-- <button class="btn btn-outline-success my-2 my-sm-0" type="button" onclick="displayUserCard()">Display User Card</button> -->
-
-        <!-- User Card -->
-
         <br />
+
+         <!-- User Card -->
 
         <h2>Who are you?</h2>
 
@@ -66,29 +64,39 @@
 
         <br />
 
+        <!-- Commit Time Graphs -->
+
         <a class="anchor" id="productivity"></a>
         <h2></a>When are you most productive?</h2>
 
-        <!-- Commit Day Graph -->
         <div class="graph">
-            <h3 id="test"></h3>
             <canvas id="commit-day-chart"></canvas>
         </div>
 
-        <!-- Commit Time Graph -->
         <div class="graph">
             <canvas id="commit-time-chart"></canvas>
         </div>
 
         <br />
 
+        <!-- Interest Graphs -->
+
         <a class="anchor" id="interests"></a>
         <h2>What are you interested in?</h2>
 
-        <!-- Commit Day Graph -->
         <div class="graph">
             <canvas id="topics-chart"></canvas>
         </div>
+
+        <!-- Popularity Graph -->
+
+        <a class="anchor" id="popularity"></a>
+        <h2>How popular are you?</h2>
+
+        <div class="graph">
+            <canvas id="popularity-chart"></canvas>
+        </div>
+        <ul class="list-group" id="not-friends-list"></ul>
 
         <!-- JavaScript files -->
         <script src="assets/js/app.js"></script> 

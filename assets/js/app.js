@@ -16,10 +16,13 @@ function main() {
         commitDayChart.destroy();
 
     if (commitTimeChart != null)
-        commitDayChart.destroy();
+        commitTimeChart.destroy();
     
     if (topicChart != null)
-        commitDayChart.destroy();
+        topicChart.destroy();
+
+    if (popularityChart != null)
+        popularityChart.destroy();
 
     getUserData(username, auth);
 }
@@ -42,17 +45,21 @@ async function apiCall(url, auth) {
 async function getUserData(username, auth) {
     let url = `https://api.github.com/users/${username}`;
     let userData = await apiCall(url, auth).catch(e => console.error(e));
-
     setUserCard(userData);
 
     url = `https://api.github.com/users/${username}/repos`;
     let repoList = await apiCall(url, auth).catch(e => console.error(e));
-
     getCommitDateData(repoList, username, auth);
 
     url = `https://api.github.com/users/${username}/starred?page=1&per_page=20`;
     let starredList = await apiCall(url, auth).catch(e => console.error(e));
     getTopics(starredList);
+
+    url = `https://api.github.com/users/${username}/followers`;
+    let followersList = await apiCall(url, auth).catch(e => console.error(e));
+    url = `https://api.github.com/users/${username}/following`;
+    let followingList = await apiCall(url, auth).catch(e => console.error(e));
+    getPopularity(followersList, followingList);
 }
 
 function setUserCard(data) {
@@ -106,7 +113,6 @@ async function getCommitDateData(repoList, username, auth) {
                 timeCount[3] += 1;
         }   
     }
-    // document.getElementById("test").innerHTML = timeCount;
     createCommitDayGraph(dayCount);
     createCommitTimeGraph(timeCount);
 }
@@ -247,7 +253,6 @@ function getTopics(starredList) {
         }
     }
     createTopicsGraph(topicList, topicCount, colours)
-    // document.getElementById("test").innerHTML = topicCount + topicList;
 }
 
 function createTopicsGraph(topicList, topicCount, colours) {
@@ -257,7 +262,6 @@ function createTopicsGraph(topicList, topicCount, colours) {
         labels: labels,
         datasets: [
             {
-                label: 'Your User\'s Commit Data',
                 backgroundColor: colours,
                 data: topicCount,
             }
@@ -287,6 +291,75 @@ function createTopicsGraph(topicList, topicCount, colours) {
     );
 }
 
+function getPopularity(followers, following) {
+    followerList = [];
+    followingList = [];
+
+    for (i in followers) {
+        let username = followers[i].login;
+        followerList.push(username);
+    }
+
+    for (i in following) {
+        let username = following[i].login;
+        followingList.push(username);
+    }
+
+    // differenceList is an array of users who you follow, but don't follow you back
+    let differenceList = followingList.filter(x => !followerList.includes(x));
+    let friends = followingList.length - differenceList.length;
+    let notFriends = differenceList.length;
+
+    createPopularityGraph(differenceList, friends, notFriends)
+}
+
+function createPopularityGraph(differenceList, friends, notFriends) {
+    const labels = ['Friends', 'Not friends :(']
+    
+    const data = {
+        labels: labels,
+        datasets: [
+            {
+                backgroundColor: ['#DB6B97','#A6CF98'],
+                data: [friends, notFriends],
+            }
+        ]
+    };
+    
+    const config = {
+        type: 'pie',
+        data: data,
+        options: {
+            responsive: true,
+            plugins: {
+            legend: {
+                position: 'top',
+            },
+            title: {
+                display: true,
+                text: 'Friend Pie Chart'
+            }
+            }
+        }
+    };
+    
+    popularityChart = new Chart(
+        document.getElementById('popularity-chart'),
+        config
+    );
+
+    let ul = document.createElement('ul');
+    document.getElementById('not-friends-list').appendChild(ul);
+
+    differenceList.forEach(function (user) {
+        let li = document.createElement('li');
+        li.className = "list-group-item";
+        ul.appendChild(li);
+        li.innerHTML += user;
+    });
+}
+
 var commitDayChart = null;
 var commitTimeChart = null;
 var topicChart = null;
+var popularityChart = null;
