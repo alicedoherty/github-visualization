@@ -13,14 +13,11 @@
     </head>
 
     <body style="background-color:#F2FFE9">
-        <nav class="navbar navbar-expand-lg navbar-light sticky-top" style="background-color: #e1f7d1;">
+        <nav class="navbar sticky-top" style="background-color: #e1f7d1;">
             <a class="navbar-brand custom-colour" href="#">GitHub Visualisation 🧑‍💻</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-            </button>
               <form class="form-inline ml-auto">
                 <input class="form-control mr-sm-2" type="text" placeholder="GitHub username" id="username">
-                <input class="form-control mr-sm-2" type="text" placeholder="Auth code (optional)" id="auth">
+                <input class="form-control mr-sm-2" type="text" placeholder="Auth token (optional)" id="auth">
                 <button class="btn btn-outline-success my-2 my-sm-0 custom-colour" type="button" onclick="main();displayUserCard()">Visualise!</button>
               </form>
             </div>
@@ -114,7 +111,7 @@
                         <hr>
                         <p>
                             For an interesting visualisation try the user 'alicedoherty' and notice that most commits
-                            are made on a Friday at night time (aka when college assignments are usually due).
+                            are made on a Friday at night time (aka when college assignments are due).
                         </p>
                         <div class="graph">
                             <canvas id="commit-day-chart"></canvas>
