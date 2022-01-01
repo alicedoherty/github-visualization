@@ -3,13 +3,14 @@ html {
   }
 
 .graph {
-    width: 700px;
+    width: 600px;
     margin: 0 auto;
     padding: 20px;
 }
 
-h2 {
+h2,h3,h5,p {
     text-align: center;
+    line-height: 2;
 }
 
 a.anchor {
@@ -17,4 +18,35 @@ a.anchor {
     position: relative;
     top: -70px;
     visibility: hidden;
+}
+
+.info {
+    width: 500px;
+    margin: auto;
+}
+
+p {
+    font-size: 17px;
+}
+
+.custom-header {
+    background-color: #e1f7d1 !important;
+}
+
+.custom-btn {
+    font-size: 22px !important;
+    color: #557C55 !important;
+    background-color: #e1f7d1 !important;
+}
+
+.custom-colour {
+    color: #557C55 !important;
+}
+
+.green-background {
+    background-color: #e1f7d1 !important;
+}
+
+.light-background {
+    background-color: #F2FFE9 !important;
 }

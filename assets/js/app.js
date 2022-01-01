@@ -132,7 +132,7 @@ function createCommitDayGraph(dayData) {
         labels: labels,
         datasets: [
             {
-                label: 'Your User\'s Commit Data',
+                label: 'User\'s Commit Data',
                 backgroundColor: '#557C55',
                 borderColor: '#557C55',
                 data: dayData,
@@ -187,7 +187,7 @@ function createCommitTimeGraph(timeData) {
         labels: labels,
         datasets: [
             {
-                label: 'Your User\'s Commit Data',
+                label: 'User\'s Commit Data',
                 backgroundColor: '#A6CF98',
                 borderColor: '#A6CF98',
                 data: timeData,
@@ -279,7 +279,7 @@ function createTopicsGraph(topicList, topicCount, colours) {
             },
             title: {
                 display: true,
-                text: 'Topics Bar Doughnut'
+                text: 'Topics Polar Area Chart'
             }
             }
         }
@@ -348,12 +348,13 @@ function createPopularityGraph(differenceList, friends, notFriends) {
         config
     );
 
+    document.getElementById('not-friends-list').removeChild
     let ul = document.createElement('ul');
     document.getElementById('not-friends-list').appendChild(ul);
 
     differenceList.forEach(function (user) {
         let li = document.createElement('li');
-        li.className = "list-group-item";
+        li.className = "list-group-item light-background";
         ul.appendChild(li);
         li.innerHTML += user;
     });

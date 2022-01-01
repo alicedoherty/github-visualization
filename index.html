@@ -13,90 +13,170 @@
     </head>
 
     <body style="background-color:#F2FFE9">
-        <nav class="navbar navbar-expand navbar-light sticky-top" style="background-color: #e1f7d1;">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+        <nav class="navbar navbar-expand-lg navbar-light sticky-top" style="background-color: #e1f7d1;">
+            <a class="navbar-brand custom-colour" href="#">GitHub Visualisation 🧑‍💻</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="navbar-nav">
-                    <a class="nav-link active" aria-current="page" href="#">GitHub Visualisation 😐</a>
-                    <a class="nav-link" href="#productivity">Productivity</a>
-                    <a class="nav-link" href="#interests">Interests</a>
-                    <a class="nav-link" href="#popularity">Popularity</a>
+              <form class="form-inline ml-auto">
+                <input class="form-control mr-sm-2" type="text" placeholder="GitHub username" id="username">
+                <input class="form-control mr-sm-2" type="text" placeholder="Auth code (optional)" id="auth">
+                <button class="btn btn-outline-success my-2 my-sm-0 custom-colour" type="button" onclick="main();displayUserCard()">Visualise!</button>
+              </form>
+            </div>
+          </nav>
+
+        <br />
+
+        <div class="info">
+            <h2>What kind of developer are you?</h2>
+            <p>This project aims to visualise different aspects of the software engineering process by
+                interrogating the GitHub API for data about an inputted user and answering the questions below.
+            </p>
+            <hr>
+            <h3>How to use</h3>
+            <p> 1. Enter a valid GitHub username (and optionally an authentication token)
+                <br />
+                (Recommended username: 'alicedoherty')
+                <br />
+                2. Click "Visualise!"
+                <br />
+                3. Click on the questions below to view the relevant visualisations.
+                <br />
+                (Note: some graphs may take a few seconds to render)
+            </p>
+        </div>
+
+        <br />
+
+        <div class="d-flex justify-content-center">
+            <div class="accordion w-75" id="accordionExample">
+                <div class="card">
+                    <div class="card-header custom-header" id="headingOne">
+                        <h2 class="mb-0">
+                        <button class="btn custom-btn" type="button" data-toggle="collapse" data-target="#collapseZero" aria-expanded="true" aria-controls="collapseZero">
+                            Who are you?
+                        </button>
+                        </h2>
+                    </div>
+                
+                    <div id="collapseZero" class="collapse" aria-labelledby="headingZero" data-parent="#accordionExample">
+                        <div class="card-body green-background">
+                            <p>
+                                Basic information from the user's GitHub profile.
+                            </p>
+                            <hr>
+                            <div class="card mb-3 graph w-50" id="user-card" style="display:none;max-width: 540px;">
+                                <div class="row g-0">
+                                    <div class="col-md-4">
+                                        <img id="avatar" src="" class="img-fluid rounded-start" alt="Profile picture">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card-body">
+                                            <h5 class="card-title" id="name"></h5>
+                                            <p class="card-text" id="bio"></p>
+                                        </div>
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item" id="login"></li>
+                                            <li class="list-group-item" id="location"></li>
+                                            <li class="list-group-item" id="followers"></li>
+                                            <li class="list-group-item" id="following"></li>
+                                        </ul>
+                                        <div class="card-body">
+                                            <a href="" class="btn btn-primary" id="html-url">Visit Profile</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                <div class="card">
+                <div class="card-header custom-header" id="headingOne">
+                    <h2 class="mb-0">
+                    <button class="btn custom-btn" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        When are you the most productive?
+                    </button>
+                    </h2>
+                </div>
+            
+                <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                    <div class="card-body green-background">
+                        <p>
+                            A look into when you are the most productive, broken down by day and time.
+                            <br />
+                            The data visualised is the time and day of your commits.
+                            <br />
+                            For some side-to-side comparison the same metrics have been visualised for
+                            Linus Torvalds.
+                            <br />
+                        </p>
+                        <hr>
+                        <p>
+                            For an interesting visualisation try the user 'alicedoherty' and notice that most commits
+                            are made on a Friday at night time (aka when college assignments are usually due).
+                        </p>
+                        <div class="graph">
+                            <canvas id="commit-day-chart"></canvas>
+                        </div>
+                
+                        <div class="graph">
+                            <canvas id="commit-time-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                <div class="card">
+                <div class="card-header custom-header" id="headingTwo">
+                    <h2 class="mb-0">
+                    <button class="btn custom-btn" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        What are you interested in?
+                    </button>
+                    </h2>
+                </div>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                    <div class="card-body green-background">
+                        <p>
+                            A snapshot into the topics you are interested in.
+                            <br />
+                            This graph visualises the topics of your 20 most recently starred repositories.
+                        </p>
+                        <hr>
+                        <div class="graph">
+                            <canvas id="topics-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                <div class="card">
+                <div class="card-header custom-header" id="headingThree">
+                    <h2 class="mb-0">
+                    <button class="btn custom-btn" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        How popular are you?
+                    </button>
+                    </h2>
+                </div>
+                <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                    <div class="card-body green-background">
+                        <p>
+                            A look into the relationships between you and your followers.
+                            <br />
+                            This graph visualises how many friends you have, where friends are people that you
+                            follow that also follow you back. "Not friends" here are people that you follow, who
+                            don't follow you back.
+                        </p>
+                        <hr>
+                        <div class="graph">
+                            <canvas id="popularity-chart"></canvas>
+                        </div>
+                        <br />
+                        <h5>Users you follow, who don't follow you back</h5>
+                        <ul class="list-group" id="not-friends-list"></ul>
+                    </div>
+                </div>
                 </div>
             </div>
-
-            <form class="form-inline">
-              <input class="form-control mr-sm-2" type="text" placeholder="GitHub username" id="username">
-              <input class="form-control mr-sm-2" type="text" placeholder="Authentication code" id="auth">
-              <button class="btn btn-outline-success my-2 my-sm-0" type="button" onclick="main();displayUserCard()">Let's Go!</button>
-            </form>
-        </nav>
-
-        <br />
-
-         <!-- User Card -->
-
-        <h2>Who are you?</h2>
-
-        <div class="card mb-3 graph" id="user-card" style="display:none;max-width: 540px;">
-            <div class="row g-0">
-                <div class="col-md-4">
-                    <img id="avatar" src="" class="img-fluid rounded-start" alt="Profile picture">
-                </div>
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <h5 class="card-title" id="name"></h5>
-                        <p class="card-text" id="bio"></p>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item" id="login"></li>
-                        <li class="list-group-item" id="location"></li>
-                        <li class="list-group-item" id="followers"></li>
-                        <li class="list-group-item" id="following"></li>
-                    </ul>
-                    <div class="card-body">
-                        <a href="" class="btn btn-primary" id="html-url">Visit Profile</a>
-                    </div>
-                </div>
-            </div>
         </div>
-
-        <br />
-
-        <!-- Commit Time Graphs -->
-
-        <a class="anchor" id="productivity"></a>
-        <h2></a>When are you most productive?</h2>
-
-        <div class="graph">
-            <canvas id="commit-day-chart"></canvas>
-        </div>
-
-        <div class="graph">
-            <canvas id="commit-time-chart"></canvas>
-        </div>
-
-        <br />
-
-        <!-- Interest Graphs -->
-
-        <a class="anchor" id="interests"></a>
-        <h2>What are you interested in?</h2>
-
-        <div class="graph">
-            <canvas id="topics-chart"></canvas>
-        </div>
-
-        <!-- Popularity Graph -->
-
-        <a class="anchor" id="popularity"></a>
-        <h2>How popular are you?</h2>
-
-        <div class="graph">
-            <canvas id="popularity-chart"></canvas>
-        </div>
-        <ul class="list-group" id="not-friends-list"></ul>
 
         <!-- JavaScript files -->
         <script src="assets/js/app.js"></script> 
