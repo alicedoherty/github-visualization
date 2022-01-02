@@ -40,7 +40,7 @@ This section returns basic information about a user's GitHub profile and a link 
 
 This is mainly to demonstrate the retrieval of basic data and to show which user's data is being analysed.
 
-![Who are you demo](demo/whoAreYou.png)
+![Who are you demo](demo/graph1.png)
 
 ### When are you the most productive?
 This section contains two graphs. One which breaks down a user's commit history by day, and another by time.
@@ -55,23 +55,23 @@ For interesting comparison, I have also visualised the same metrics for Linus To
 
 The aim of this section is to give the user an insight into when they get the most work done. For example, for my profile (alicedoherty), an overwhelming majority of my commits are made on Fridays (because this is when most assignments are due).
 
-![When are you productive dmeo](demo/whenAreYouProductive.png)
+![When are you productive demo](demo/graph2.png)
 
 ### What are you interested in?
 This section visualises what topics you are most interested in by looking at the topics of your starred repositories.
 
-![What are you interested in demo](demo/whatAreYouInterestedIn.png)
+![What are you interested in demo](demo/graph3.png)
 
 ### How popular are you?
 This section looks at the relationships between you and your followers.
 
 It defines friends as those users who you follow, who also follow you back (this is how TikTok defines friends). "Not friends" are those who you follow, who don't follow you back.
 
-![How popular are you demo](demo/howPopularAreYou1.png)
+![How popular are you demo](demo/graph4.png)
 
 It also lists the users you follow, who don't follow you back. (Note: that for this demo I have changed the usernames to sample ones, but if you were to run the program yourself the actual usernames would be displayed).
 
-![How popular are you demo](demo/howPopularAreYou2.png)
+![How popular are you demo](demo/graph5.png)
 
 ### Error handling
 
