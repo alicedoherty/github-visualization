@@ -360,6 +360,7 @@ function createPopularityGraph(differenceList, friends, notFriends) {
     let ul = document.createElement('ul');
     document.getElementById('not-friends-list').appendChild(ul);
 
+    // differenceList = ['sampleUser1', 'sampleUser2', 'sampleUser3', 'sampleUser4'];
     differenceList.forEach(function (user) {
         let li = document.createElement('li');
         li.className = "list-group-item light-background";
