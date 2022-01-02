@@ -13,7 +13,7 @@ The GitHub API is interrogated and the data is visualised using Chart.js.
 ## How to run
 
 ### Online [RECOMMENDED]
-The project is hosted online with GitHub Pages and can be found at: https://github.com/alicedoherty/github-visualization
+The project is hosted online with GitHub Pages and can be found at: https://alicedoherty.github.io/github-visualization/
 
 ### Locally
 1. Clone this repository:
