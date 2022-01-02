@@ -51,7 +51,7 @@ async function getUserData(username, auth) {
     let repoList = await apiCall(url, auth).catch(e => console.error(e));
     getCommitDateData(repoList, username, auth);
 
-    url = `https://api.github.com/users/${username}/starred?page=1&per_page=20`;
+    url = `https://api.github.com/users/${username}/starred?page=1&per_page=30`;
     let starredList = await apiCall(url, auth).catch(e => console.error(e));
     getTopics(starredList);
 
@@ -75,6 +75,7 @@ function setUserCard(data) {
 
 function displayUserCard() {
     document.getElementById('user-card').style.display = "block";
+    $("#collapseZero").collapse('toggle');
 }
 
 async function getCommitDateData(repoList, username, auth) {
@@ -84,8 +85,7 @@ async function getCommitDateData(repoList, username, auth) {
     var timeCount = [0,0,0,0];
 
     for (repo in repoList) {
-        // TODO Come back and alter parameters
-        let url = `https://api.github.com/repos/${username}/${repoList[repo].name}/commits?page=1&per_page=20`;
+        let url = `https://api.github.com/repos/${username}/${repoList[repo].name}/commits?page=1&per_page=30`;
         let commitList = await apiCall(url, auth).catch(e => console.error(e));
 
         for (commit in commitList) {
@@ -188,8 +188,8 @@ function createCommitTimeGraph(timeData) {
         datasets: [
             {
                 label: 'User\'s Commit Data',
-                backgroundColor: '#A6CF98',
-                borderColor: '#A6CF98',
+                backgroundColor: '#557C55',
+                borderColor: '#557C55',
                 data: timeData,
                 borderWidth: 2,
                 borderRadius: 10,
@@ -197,8 +197,8 @@ function createCommitTimeGraph(timeData) {
             },
             {
                 label: 'Linus Torvalds\' Commit Data',
-                backgroundColor: '#557C55',
-                borderColor: '#557C55',
+                backgroundColor: '#A6CF98',
+                borderColor: '#A6CF98',
                 data: [12,7,44,48],
                 borderWidth: 2,
                 borderRadius: 10,
@@ -252,7 +252,12 @@ function getTopics(starredList) {
             }
         }
     }
-    createTopicsGraph(topicList, topicCount, colours)
+    
+    if (topicList.length == 0) {
+        document.getElementById('no-topics').innerHTML = "Looks like you don't have any starred repositories :(";
+    } else {
+        createTopicsGraph(topicList, topicCount, colours);
+    }
 }
 
 function createTopicsGraph(topicList, topicCount, colours) {
@@ -309,8 +314,12 @@ function getPopularity(followers, following) {
     let differenceList = followingList.filter(x => !followerList.includes(x));
     let friends = followingList.length - differenceList.length;
     let notFriends = differenceList.length;
-
-    createPopularityGraph(differenceList, friends, notFriends)
+    
+    if (followingList.length == 0) {
+        document.getElementById('no-followers').innerHTML = "Looks like you don't follow anyone :(";
+    } else {
+        createPopularityGraph(differenceList, friends, notFriends);
+    }
 }
 
 function createPopularityGraph(differenceList, friends, notFriends) {
@@ -348,7 +357,6 @@ function createPopularityGraph(differenceList, friends, notFriends) {
         config
     );
 
-    document.getElementById('not-friends-list').removeChild
     let ul = document.createElement('ul');
     document.getElementById('not-friends-list').appendChild(ul);
 
